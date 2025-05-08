@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommandation de Solutions Technologiques - M1 ILW</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1d4ed8;
+            --bg-color: #f8fafc;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        nav {
+            background: var(--secondary-color);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav button {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        nav button:hover, nav button.active {
+            background: white;
+            color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .module {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .module.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .resource-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .resource-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        .resource-link::before {
+            content: "→";
+            font-family: system-ui;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .section ul {
+            list-style-type: none;
+            padding-left: 1.5rem;
+        }
+
+        .section li {
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .section li::before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: -1rem;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+
+        .tool-tag {
+            background: #e5e7eb;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Recommandation de Solutions Technologiques</h1>
+        <div class="subtitle">Master 1 ILW - Techniques de Recommandation</div>
+    </header>
+
+    <nav>
+        <button class="active" onclick="showModule(1)">Analyse des Besoins</button>
+        <button onclick="showModule(2)">Évaluation</button>
+        <button onclick="showModule(3)">Solutions</button>
+        <button onclick="showModule(4)">Ressources</button>
+    </nav>
+
+    <main>
+        <!-- Module 1: Analyse des Besoins -->
+        <div id="module1" class="module active">
+            <div class="section">
+                <h2>Méthodologie d'Analyse</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <h3>Collecte des Besoins</h3>
+                        <ul>
+                            <li>Entretiens structurés et questionnaires</li>
+                            <li>Ateliers de travail collaboratifs</li>
+                            <li>Observation directe des utilisateurs</li>
+                            <li>Analyse de la documentation existante</li>
+                            <li>Sessions de brainstorming</li>
+                        </ul>
+                        <div class="info-box">
+                            Utilisez des techniques variées pour obtenir une vision complète des besoins.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Outils de Collecte</h3>
+                        <div class="tool-tag">Miro</div>
+                        <div class="tool-tag">Lucidchart</div>
+                        <div class="tool-tag">Jira</div>
+                        <div class="tool-tag">Confluence</div>
+                        <div class="tool-tag">Microsoft Teams</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Analyse de l'Existant</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Éléments à Analyser</th>
+                            <th>Outils/Méthodes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Infrastructure</td>
+                            <td>
+                                <ul>
+                                    <li>Architecture actuelle</li>
+                                    <li>Performance système</li>
+                                    <li>Sécurité et conformité</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Audits techniques</li>
+                                    <li>Monitoring</li>
+                                    <li>Tests de charge</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Processus</td>
+                            <td>
+                                <ul>
+                                    <li>Workflows existants</li>
+                                    <li>Points de friction</li>
+                                    <li>KPIs actuels</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Cartographie des processus</li>
+                                    <li>Analyse des métriques</li>
+                                    <li>Interviews utilisateurs</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Module 2: Évaluation -->
+        <div id="module2" class="module">
+            <div class="section">
+                <h2>Critères d'Évaluation</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <h3>Aspects Techniques</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Critère</th>
+                                <th>Importance</th>
+                            </tr>
+                            <tr>
+                                <td>Performance</td>
+                                <td>Critique</td>
+                            </tr>
+                            <tr>
+                                <td>Sécurité</td>
+                                <td>Haute</td>
+                            </tr>
+                            <tr>
+                                <td>Scalabilité</td>
+                                <td>Moyenne</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <h3>Aspects Business</h3>
+                        <ul>
+                            <li>ROI (Return on Investment)</li>
+                            <li>TCO (Total Cost of Ownership)</li>
+                            <li>Time-to-Market</li>
+                            <li>Conformité réglementaire</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 3: Solutions -->
+        <div id="module3" class="module">
+            <div class="section">
+                <h2>Types de Solutions</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <h3>Solutions Cloud</h3>
+                        <ul>
+                            <li>SaaS (Software as a Service)</li>
+                            <li>PaaS (Platform as a Service)</li>
+                            <li>IaaS (Infrastructure as a Service)</li>
+                            <li>Solutions hybrides</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Solutions On-Premise</h3>
+                        <ul>
+                            <li>Développement sur mesure</li>
+                            <li>Progiciels</li>
+                            <li>Solutions open source</li>
+                            <li>Solutions propriétaires</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 4: Ressources -->
+        <div id="module4" class="module">
+            <div class="section">
+                <h2>Documentation et Références</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <h3>Frameworks et Standards</h3>
+                        <ul>
+                            <li><a href="https://www.axelos.com/certifications/itil-service-management" class="resource-link">ITIL v4 Foundation</a></li>
+                            <li><a href="https://www.opengroup.org/togaf" class="resource-link">TOGAF Framework</a></li>
+                            <li><a href="https://aws.amazon.com/architecture/well-architected/" class="resource-link">AWS Well-Architected</a></li>
+                            <li><a href="https://learn.microsoft.com/azure/architecture/" class="resource-link">Azure Architecture Center</a></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Ressources en Ligne</h3>
+                        <ul>
+                            <li><a href="https://www.gartner.com/en/research" class="resource-link">Gartner Research Portal</a></li>
+                            <li><a href="https://martinfowler.com" class="resource-link">Martin Fowler's Blog</a></li>
+                            <li><a href="https://www.thoughtworks.com/radar" class="resource-link">ThoughtWorks Tech Radar</a></li>
+                            <li><a href="https://www.infoq.com" class="resource-link">InfoQ Articles</a></li>
+                        </ul>
+                    </div>
+                </div>
+				<div class="section">
+					<div class="grid-container">
+						<div class="card">
+							<h3>Ressources Françaises</h3>
+							<ul>
+								<li><a href="https://www.cigref.fr" class="resource-link">CIGREF - Club Informatique des Grandes Entreprises Françaises</a></li>
+								<li><a href="https://syntec-numerique.fr" class="resource-link">Numeum (ex-Syntec Numérique)</a></li>
+								<li><a href="https://www.systematic-paris-region.org" class="resource-link">Systematic Paris-Region</a></li>
+								<li><a href="https://www.capdigital.com" class="resource-link">Cap Digital</a></li>
+							</ul>
+							<div class="info-box">
+								Organisations professionnelles et pôles de compétitivité français
+							</div>
+						</div>
+						<div class="card">
+							<h3>Institutions & Standards</h3>
+							<ul>
+								<li><a href="https://www.afnor.org" class="resource-link">AFNOR - Normes et certification</a></li>
+								<li><a href="https://www.cnil.fr" class="resource-link">CNIL - Protection des données</a></li>
+								<li><a href="https://www.ssi.gouv.fr" class="resource-link">ANSSI - Sécurité des systèmes</a></li>
+								<li><a href="https://www.finances.gouv.fr/dgfip" class="resource-link">RGS - Référentiel Général de Sécurité</a></li>
+							</ul>
+						</div>
+						<div class="card">
+							<h3>Veille Technologique FR</h3>
+							<ul>
+								<li><a href="https://www.lemondeinformatique.fr" class="resource-link">Le Monde Informatique</a></li>
+								<li><a href="https://www.zdnet.fr" class="resource-link">ZDNet France</a></li>
+								<li><a href="https://www.journaldunet.com" class="resource-link">Journal du Net</a></li>
+								<li><a href="https://www.usine-digitale.fr" class="resource-link">L'Usine Digitale</a></li>
+							</ul>
+						</div>
+					</div>
+					
+                <div class="info-box">
+                    Ces ressources sont régulièrement mises à jour. Vérifiez toujours les dernières versions disponibles.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showModule(moduleNumber) {
+            document.querySelectorAll('.module').forEach(module => {
+                module.classList.remove('active');
+            });
+            
+            document.getElementById(`module${moduleNumber}`).classList.add('active');
+            
+            document.querySelectorAll('nav button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`nav button:nth-child(${moduleNumber})`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
